@@ -19,7 +19,7 @@ Custom URL Scheme 플러그인 설치를 위해 URL_SCHEME파라메터를 전달
 cordova plugin add iamport-ionic-inicis --variable URL_SCHEME=**ioniciamport**
 
 ### 2. Github 소스로 설치
-cordova plugin add https://github.com/iamport/iamport-ionic-inicis --variable URL_SCHEME=**ioniciamport**
+cordova plugin add https://github.com/DonghwiJung/iamport-ionic-inicis.git --variable URL_SCHEME=**ioniciamport**
 
 
 ## Usage (Cordova 방식)
@@ -31,7 +31,7 @@ IonicIamportInicis.payment(user_code, param, callback)
 ```
 
 ### 1. 특징  
-cordova 특성상 `inappbrowser`를 통해 결제프로세스가 진행되므로 모바일 브라우저 연동과는 다소 차이가 있습니다. 
+cordova 특성상 `inappbrowser`를 통해 결제프로세스가 진행되므로 모바일 브라우저 연동과는 다소 차이가 있습니다.
 `m_redirect_url`속성을 overwrite하여 `inappbrowser`결제를 구현하고 있기 때문에 다음과 같은 차이점이 있습니다.  
 (참조 : [cordova-iamport.js](https://github.com/iamport/iamport-ionic-inicis/blob/master/www/js/cordova-iamport.js#L18-L19))  
 
@@ -83,7 +83,7 @@ IonicIamportInicis.certification('가맹점 식별코드', {
 ## Usage (Ionic 방식)
 ### 1. javascript 선언  
 플러그인 설치가 되면 ng-cordova-iamport.js가 platform 폴더에 자동으로 복사가 됩니다.  
-때문에, ionic 기본 페이지인 index.html에서 script를 선언만 해주시면 됩니다. 
+때문에, ionic 기본 페이지인 index.html에서 script를 선언만 해주시면 됩니다.
 (단, `app.js`, `controllers.js` 보다 앞에 추가해주셔야 `ng-cordova-iamport.js`가 제공하는 angular module과 factory 사용이 가능합니다.  
 
 ```html
@@ -99,10 +99,10 @@ angular.module('starter.controllers', ['ngCordovaIamport'])
 
 ```javascript
 angular.controller('SomethingCtrl', function($scope, $http, $cordovaIamport) {
-	
+
 	$scope.checkout = function() {
 		//do something
-		
+
 		//결제시작
 		var iamport_user_code = 'imp12345678'; // https://admin.iamport.kr에 가입 후 발급
 		var param = {
@@ -115,7 +115,7 @@ angular.controller('SomethingCtrl', function($scope, $http, $cordovaIamport) {
 			buyer_tel : '010-1234-5678',
 			app_scheme : 'ioniciamport' //URL_SCHEME과 동일한 값 사용
 	    };
-	
+
 	    $cordovaIamport.payment(iamport_user_code, param).then(function(result) {
 	    	//server에서 결제완료여부 최종 체크할 수 있도록 imp_uid전달
 	    	$http.post('/payments/confirm', {imp_uid:result.imp_uid}).then(function(rsp) {
@@ -127,23 +127,23 @@ angular.controller('SomethingCtrl', function($scope, $http, $cordovaIamport) {
 	    	alert(err);
 	    });
 	}
-	
+
 });
 ```
 
 ### 4. 본인인증 Example  
 ```javascript
 angular.controller('SomethingCtrl', function($scope, $http, $cordovaIamport) {
-	
+
 	$scope.certification = function() {
 		//do something
-		
+
 		//본인인증시작
 		var iamport_user_code = 'imp12345678'; // https://admin.iamport.kr에 가입 후 발급
 		var param = {
 			phone : '010-1234-1234'
 	    };
-	
+
 	    $cordovaIamport.certification(iamport_user_code, param).then(function(result) {
 	    	//server에서 결제완료여부 최종 체크할 수 있도록 imp_uid전달
 	    	$http.post('/certifications/confirm', {imp_uid:result.imp_uid}).then(function(rsp) {
@@ -155,7 +155,7 @@ angular.controller('SomethingCtrl', function($scope, $http, $cordovaIamport) {
 	    	alert(err);
 	    });
 	}
-	
+
 });
 ```
 
@@ -171,7 +171,7 @@ angular.controller('SomethingCtrl', function($scope, $http, $cordovaIamport) {
 #### 알려진 문제점  
 실시간계좌이체 결제는 결제완료 후 inappbrowser가 자동으로 닫히지 않는 문제가 있으므로 해당 이슈가 해결되기 전까지는 `IMP.request_pay(param, callback)` 호출 시 param.pay_method : 'trans'는 사용하지 않기를 권장드립니다.  
 
-실시간 계좌이체의 경우 기본적인 KG이니시스 동작 순서가 다음과 같습니다. 
+실시간 계좌이체의 경우 기본적인 KG이니시스 동작 순서가 다음과 같습니다.
 
 1. ionic앱에서 Bankpay호출
 2. Bankpay앱에서 계좌정보 인증 및 이체
